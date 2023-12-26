@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testing/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -8,43 +9,109 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Contact> contacts = [
-    Contact("Limon", "12345"),
-    Contact("Sohag", "1234"),
+  final List<Contact> contacts = [
+    const Contact("Limon", "12345"),
+    const Contact("Sohag", "1234"),
   ];
+  int _index = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
         centerTitle: false,
-        actions: const [
-          Icon(Icons.search),
-          SizedBox(
+        actions: [
+          const Icon(Icons.search),
+          const SizedBox(
             width: 10,
           ),
-          Icon(Icons.settings),
-          SizedBox(
+          FilledButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const SettingsPage(),
+                ),
+              );
+            },
+            child: const Icon(Icons.settings),
+          ),
+          const SizedBox(
             width: 10,
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          for (int i = 0; i < contacts.length; i++) ...[
-            ContactTile(name: contacts[i].name, phone: contacts[i].phone),
-          ]
-        ],
-      ),
+      body: [
+        HomeBody(contacts: contacts),
+        const ContactsBody(),
+        const MessagesBody(),
+      ][_index],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {
-            contacts.add(Contact("new", "2245"));
+            contacts.add(const Contact("new", "2245"));
           });
         },
         child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (newIndex) {
+          setState(() {
+            _index = newIndex;
+          });
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.contacts),
+            label: "Contacts",
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.message),
+            label: "Messeges",
+          ),
+        ],
+      ),
     );
+  }
+}
+
+class HomeBody extends StatefulWidget {
+  const HomeBody({super.key, required this.contacts});
+  final List<Contact> contacts;
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: widget.contacts.length,
+      itemBuilder: (context, i) => ContactTile(
+          name: widget.contacts[i].name, phone: widget.contacts[i].phone),
+    );
+  }
+}
+
+class ContactsBody extends StatelessWidget {
+  const ContactsBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text("Contacts");
+  }
+}
+
+class MessagesBody extends StatelessWidget {
+  const MessagesBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text("Messages");
   }
 }
 
