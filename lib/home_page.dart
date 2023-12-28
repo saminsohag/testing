@@ -8,6 +8,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<String> names = ["sohag", "sohan"];
+  List<Color> colors = [
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.black,
+    Colors.yellow,
+    Colors.teal,
+    Colors.cyan
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,53 +25,61 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Home"),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Stack(
-            children: [
-              Container(
-                width: 300,
-                height: 300,
-                color: Colors.red,
+          // Expanded(
+          //   child: ListView.builder(
+          //     itemCount: names.length,
+          //     itemBuilder: (cintext, index) {
+          //       return Card(
+          //         child: ListTile(title: Text(names[index])),
+          //       );
+          //     },
+          //   ),
+          // )
+          // Expanded(
+          //   child: GridView.count(
+          //     crossAxisCount: 3,
+          //     mainAxisSpacing: 5,
+          //     crossAxisSpacing: 10,
+          //     padding: const EdgeInsets.all(10),
+          //     children: [
+          //       Container(
+          //         color: Colors.red,
+          //       ),
+          //       Container(
+          //         color: Colors.blue,
+          //       ),
+          //       Container(
+          //         color: Colors.green,
+          //       ),
+          //       Container(
+          //         color: Colors.yellow,
+          //       ),
+          //       Container(
+          //         color: Colors.black,
+          //       ),
+          //       Container(
+          //         color: Colors.pink,
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          Expanded(
+            child: GridView.builder(
+              itemCount: colors.length,
+              padding: const EdgeInsets.all(10),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: 200,
-                  height: 200,
-                  color: Colors.green,
-                ),
-              ),
-              Positioned(
-                top: 20,
-                left: 20,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.yellow,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                width: 200,
-                height: 200,
-                color: Colors.black,
-              ),
-              Container(
-                width: 200,
-                height: 200,
-                color: Colors.green,
-              ),
-              Container(
-                width: 200,
-                height: 200,
-                color: Colors.yellow,
-              ),
-            ],
+              itemBuilder: (context, index) {
+                //
+                return Container(
+                  color: colors[index],
+                );
+              },
+            ),
           ),
         ],
       ),
